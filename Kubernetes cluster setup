@@ -103,24 +103,33 @@ ufw allow 10251/tcp
 ufw allow 10252/tcp
 ufw allow 10255/tcp
 ufw reload
+
 On Worker Nodes
+================
 FirwallD:
+---------
 
 firewall-cmd --permanent --add-port=10251/tcp
 firewall-cmd --permanent --add-port=10255/tcp
 firewall-cmd --reload
-UFW:
 
+UFW:
+----
 ufw allow 10251/tcp
 ufw allow 10255/tcp
 ufw reload
+
+
 SELinux
+=======
 Consider disabling SELinux on CentOS 7 / RHEL 7 nodes.
 
 setenforce 0
-
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+
+
 Kernel Settings
+================
 In RHEL 7 /CentOS 7, set net.bridge.bridge-nf-call-iptables to 1 in your sysctl config.
 
 cat <<EOF > /etc/sysctl.d/k8s.conf
@@ -128,10 +137,14 @@ net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOF
 sysctl -p
+
+
 Install Docker
+==============
 Install Docker on all of your nodes (Master and Minions). Docker version v18.06 is recommended, but v1.11,  v1.12, v1.13 and 17.03 also work well with Kubernetes.
 
 CentOS 7 / RHEL 7
+*****************
 ### Install Docker from CentOS/RHEL repository ###
 
 yum install -y docker
@@ -178,7 +191,10 @@ mkdir -p /etc/systemd/system/docker.service.d
 systemctl daemon-reload
 systemctl restart docker
 systemctl enable docker
+
+
 Ubuntu 18.04 / Ubuntu 16.04
+****************************
 ### Install Docker from Ubuntu's repositories ###
 
 apt-get update
@@ -222,7 +238,10 @@ mkdir -p /etc/systemd/system/docker.service.d
 # Restart Docker Daemon
 systemctl daemon-reload
 systemctl restart docker
+
+
 Debian 9
+*********
 ### Install Docker from Debian's repositories ###
 
 apt-get update
@@ -266,7 +285,11 @@ mkdir -p /etc/systemd/system/docker.service.d
 # Restart Docker Daemon
 systemctl daemon-reload
 systemctl restart docker
+
+
+
 Configure Kubernetes Repository
+================================
 Kubernetes packages are not available in OS repositories, so you need to follow the below steps to configure its repository on all your nodes.
 
 
@@ -283,13 +306,18 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cl
 exclude=kube*
 EOF
 
+
 ### Ubuntu 18.04 / 16.05 & Debian 9 ###
 
 apt-get update
 apt-get install -y curl apt-transport-https
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+
+
 Install kubeadm, kubelet and kubectl
+====================================
 On all of your nodes, run the following commands to install required packages.
 
 kubeadm: the command to create the cluster.
@@ -307,12 +335,19 @@ systemctl start kubelet
 
 apt-get update
 apt-get install -y kubelet kubeadm kubectl
+
+
+
 Initialize Kubernetes Master
+============================
 On the Master node, execute the kubeadm init command in the terminal to initialize the cluster.
 
 Depending upon the network add-on you use, you may need to set the --pod-network-cidr to a specific value. Here, I am using Wave pod network which doesn’t require any extra arguments.
+
 kubeadm init
+
 Output:
+--------------------------------------------------------------------------------------------------------------------------------------------------
 
 [init] Using Kubernetes version: v1.13.0
 [preflight] Running pre-flight checks
@@ -355,6 +390,8 @@ as root:
   kubeadm join 192.168.1.10:6443 --token d1dyaj.31zxywbg93s1ywjy --discovery-token-ca-cert-hash sha256:71a91721595fde66b6382908d801266602a14de8e16bdb7a3cede21509427009
 Manage Cluster
 Run these commands in the terminal to manage and work on the cluster as a regular user.
+-------------------------------------------------------------------------------------------------------------------------------------------
+
 
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
