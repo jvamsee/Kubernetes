@@ -33,9 +33,9 @@ Container Runtime: It is container software (Docker)
 
 Environment
 -----------
-Node	        Hostname	    IP Address	    OS	                   CPU	RAM
-Master Node	    kube.master    	192.168.1.10	CentOS 7 / RHEL 7	    2	2GB
-Minion Node 1	kube.node1	    192.168.1.20	Ubuntu 18.04 / 16.04	2	2GB
+Node	        Hostname	    IP Address	        OS	                   CPU	RAM
+Master Node	kube.master         192.168.1.10	CentOS 7 / RHEL 7	    2	2GB
+Minion Node 1	kube.node1	    192.168.1.20	Ubuntu 18.04 / 16.04	    2	2GB
 Minion Node 2	kube.node2	    192.168.1.30	Debian 9	            2	2GB
 
 You must disable swap for Kubernetes to work properly
@@ -494,34 +494,11 @@ To see the stack trace of this error execute with --v=5 or higher
 [certs] Generating "front-proxy-client" certificate and key
 [certs] Generating "etcd/ca" certificate and key
 [certs] Generating "etcd/server" certificate and key
-[certs] etcd/server serving cert is signed for DNS names [bangvmplmopar02.sapient.com localhost] and IPs [10.150.18.36 127.0.0.1 ::1]
-[certs] Generating "etcd/peer" certificate and key
-[certs] etcd/peer serving cert is signed for DNS names [bangvmplmopar02.sapient.com localhost] and IPs [10.150.18.36 127.0.0.1 ::1]
-[certs] Generating "etcd/healthcheck-client" certificate and key
-[certs] Generating "apiserver-etcd-client" certificate and key
-[certs] Generating "sa" key and public key
-[kubeconfig] Using kubeconfig folder "/etc/kubernetes"
-[kubeconfig] Writing "admin.conf" kubeconfig file
-[kubeconfig] Writing "kubelet.conf" kubeconfig file
-[kubeconfig] Writing "controller-manager.conf" kubeconfig file
-[kubeconfig] Writing "scheduler.conf" kubeconfig file
-[control-plane] Using manifest folder "/etc/kubernetes/manifests"
-[control-plane] Creating static Pod manifest for "kube-apiserver"
-[control-plane] Creating static Pod manifest for "kube-controller-manager"
-[control-plane] Creating static Pod manifest for "kube-scheduler"
-[etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
-[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests". This can take up to 4m0s
-[apiclient] All control plane components are healthy after 39.014490 seconds
-[upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
-[kubelet] Creating a ConfigMap "kubelet-config-1.16" in namespace kube-system with the configuration for the kubelets in the cluster
-[upload-certs] Skipping phase. Please see --upload-certs
-[mark-control-plane] Marking the node bangvmplmopar02.sapient.com as control-plane by adding the label "node-role.kubernetes.io/master=''"
-[mark-control-plane] Marking the node bangvmplmopar02.sapient.com as control-plane by adding the taints [node-role.kubernetes.io/master:NoSchedule]
-[kubelet-check] Initial timeout of 40s passed.
-[bootstrap-token] Using token: 9m47m1.cuhmr4qje9zqx0nm
-[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
-[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
-[bootstrap-token] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+
+.      .      .
+.      .      .
+.      .      .
+
 [bootstrap-token] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
 [bootstrap-token] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
 [addons] Applied essential addon: CoreDNS
@@ -630,9 +607,14 @@ Now, check the worker nodes status on the master node using the following comman
 
 kubectl get nodes
 Output:
+----------------------------------------------------------------------------------------------------------------------------------------
+[kube8@xxxxxxx ~]$ kubectl get nodes
+NAME          STATUS   ROLES    AGE   VERSION
+kube.master   Ready    master   8h    v1.16.2
+kube.node1    Ready    <none>   80m   v1.16.2
+kube.node2    Ready    <none>   30m   v1.16.2
+-----------------------------------------------------------------------------------------------------------------------------------------
 
-Install Kubernetes on CentOS 7 - Nodes List
-Install Kubernetes on CentOS 7 – Nodes List
 You should see worker nodes are in ready state.
 
 In our next article, we will deploy pods, services, and replication controllers in Kubernetes.
