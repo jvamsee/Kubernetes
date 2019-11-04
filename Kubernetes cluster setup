@@ -1,5 +1,5 @@
 How To Install Kubernetes on CentOS 7, Ubuntu 18.04 / 16.04 & Debian 9
------------------------------------------------------------------------
+=======================================================================
 
 Kubernetes is an open-source Production-Grade container orchestration tool that helps to automate deploying, scaling, managing containerized applications. Google initially designed Kubernetes and now maintained by the Cloud Native Computing Foundation.
 
@@ -70,7 +70,15 @@ Firewall
 Configure Firewall for Kubernetes to work correctly.
 
 On Master Node
-FirwallD:
+---------------
+
+FirewallD:
+----------
+Check the firewalld status:
+systemctl status firewalld
+
+If firewalld is disable, start it:
+systemctl status firewalld
 
 firewall-cmd --permanent --add-port=6443/tcp
 firewall-cmd --permanent --add-port=2379-2380/tcp
@@ -79,8 +87,13 @@ firewall-cmd --permanent --add-port=10251/tcp
 firewall-cmd --permanent --add-port=10252/tcp
 firewall-cmd --permanent --add-port=10255/tcp
 firewall-cmd --reload
-UFW:
 
+
+
+UFW:
+----
+How to Install and Use UFW Firewall on Linux: 
+https://linuxconfig.org/how-to-install-and-use-ufw-firewall-on-linux
 
 ufw allow 6443/tcp
 ufw allow 2379tcp
