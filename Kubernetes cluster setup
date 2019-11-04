@@ -16,27 +16,34 @@ Here, we will deploy a multi-node Kubernetes cluster using the kubeadm. In this 
 
 
 Components
-Master Node
+==========
+Master Node :-
+--------------
 kube-API server: It is an API server, runs on the master node that exposes Kubernetes API
 etcd: A key store that stores Kubenetes cluster data
 kube-scheduler: It is a scheduler that runs on the master node which monitors newly created pods and runs those pods on select nodes depends on resource availability.
 kube-controller-manager: It is a control manager that runs on the manager who is responsible for monitoring nodes and maintaining pods replication.
 cloud-controller-manager: A cloud control manager that interact with underlying cloud providers (Ex: DigitalOcean, Rancher, etc..).
 
-Worker Nodes
+Worker Nodes :-
+---------------
 kubelet: It runs on all worker nodes and handles tasks like starting pods and containers.
 kube-proxy: It is a Kubernetes network proxy that forwards TCP/UDP incoming requests to backend container.
 Container Runtime: It is container software (Docker)
 
 Environment
-Node	Hostname	IP Address	OS	CPU	RAM
-Master Node	master.itzgeek.local	192.168.1.10	CentOS 7 / RHEL 7	2	2GB
-Minion Node 1	node1.itzgeek.local	192.168.1.20	Ubuntu 18.04 / 16.04	2	2GB
-Minion Node 2	node2.itzgeek.local	192.168.1.30	Debian 9	2	2GB
+-----------
+Node	        Hostname	    IP Address	    OS	                   CPU	RAM
+Master Node	    kube.master    	192.168.1.10	CentOS 7 / RHEL 7	    2	2GB
+Minion Node 1	kube.node1	    192.168.1.20	Ubuntu 18.04 / 16.04	2	2GB
+Minion Node 2	kube.node2	    192.168.1.30	Debian 9	            2	2GB
+
 You must disable swap for Kubernetes to work properly
+
 Here, I am using a mixed environment for this demo. But, I request you use the similar operating system only for ease troubleshooting.
 
 Prerequisites
+--------------
 Become the root user.
 
 su -
@@ -47,17 +54,19 @@ sudo su -
 Set Hostname
 Set unique hostname for all your nodes. Example:
 
-hostnamectl set-hostname master.itzgeek.local
+hostnamectl set-hostname kube-master
 Make a host entry or DNS record to resolve hostname for all nodes.
 
 
 vi /etc/hosts
 Entry:
 
-192.168.1.10 master.itzgeek.local master
-192.168.1.20 node1.itzgeek.local node1
-192.168.1.30 node2.itzgeek.local node2
+192.168.1.10 kube.master master
+192.168.1.20 kube.node1  node1
+192.168.1.30 kube.node2  node2
+
 Firewall
+=========
 Configure Firewall for Kubernetes to work correctly.
 
 On Master Node
