@@ -1,1 +1,4 @@
 Download redhat 7.2 iso image: https://archive.org/details/rhel-server-7.2-x86_64-dvd
+curl https://ia801202.us.archive.org/35/items/rhel-server-7.2-x86_64-dvd/rhel-server-7.2-x86_64-dvd.iso -O rhel-server-7.2-x86_64-dvd.iso
+
+
