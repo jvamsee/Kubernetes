@@ -645,3 +645,6 @@ yum install -y http://vault.centos.org/centos/7.3.1611/extras/x86_64/Packages/co
 https://github.com/mmumshad/kubernetes-training-answers/blob/master/Section_Pod/Exercise%208/pod-definition.yml
 
 
+https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
+
+
