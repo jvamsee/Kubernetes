@@ -1,7 +1,6 @@
-```
-How To Install Kubernetes on CentOS 7, Ubuntu 18.04 / 16.04 & Debian 9
-=======================================================================
-```
+
+### How To Install Kubernetes on CentOS 7, Ubuntu 18.04 / 16.04 & Debian 9
+### =======================================================================
 
 Kubernetes is an open-source Production-Grade container orchestration tool that helps to automate deploying, scaling, managing containerized applications. Google initially designed Kubernetes and now maintained by the Cloud Native Computing Foundation.
 
