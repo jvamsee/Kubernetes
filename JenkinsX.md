@@ -19,8 +19,7 @@
 ### JenkinsX – new Kubernetes dream? Part 2 [Technical!]
 https://blog.octo.com/en/jenkinsx-new-kubernetes-dream-part-2-technical/
 
-
-
+---
 - https://www.suse.com/media/presentation/DEV1118_DevOps_Pipelines_with_Jenkins_X_on_SUSE_CaaS_Platform.pdf
 
 
