@@ -521,3 +521,543 @@ azure-vote-front   LoadBalancer   10.0.111.212   52.142.20.22   80:30053/TCP   5
 
 msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
 $
+
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+azure-vote-back-7dbcd6c889-hzklm    1/1     Running   0          3h57m
+azure-vote-front-84fdc57c5b-cjnbm   1/1     Running   0          3h57m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+azure-vote-back    1/1     1            1           3h57m
+azure-vote-front   1/1     1            1           3h57m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl scale --replicas=5 deployment/azure-vote-front
+deployment.apps/azure-vote-front scaled
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get pods
+NAME                                READY   STATUS              RESTARTS   AGE
+azure-vote-back-7dbcd6c889-hzklm    1/1     Running             0          3h58m
+azure-vote-front-84fdc57c5b-6p9rn   0/1     ContainerCreating   0          4s
+azure-vote-front-84fdc57c5b-7cs6q   1/1     Running             0          4s
+azure-vote-front-84fdc57c5b-82xhb   0/1     ContainerCreating   0          4s
+azure-vote-front-84fdc57c5b-bsptj   1/1     Running             0          4s
+azure-vote-front-84fdc57c5b-cjnbm   1/1     Running             0          3h58m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get pods
+NAME                                READY   STATUS              RESTARTS   AGE
+azure-vote-back-7dbcd6c889-hzklm    1/1     Running             0          3h58m
+azure-vote-front-84fdc57c5b-6p9rn   0/1     ContainerCreating   0          13s
+azure-vote-front-84fdc57c5b-7cs6q   1/1     Running             0          13s
+azure-vote-front-84fdc57c5b-82xhb   0/1     ContainerCreating   0          13s
+azure-vote-front-84fdc57c5b-bsptj   1/1     Running             0          13s
+azure-vote-front-84fdc57c5b-cjnbm   1/1     Running             0          3h58m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get pods
+NAME                                READY   STATUS              RESTARTS   AGE
+azure-vote-back-7dbcd6c889-hzklm    1/1     Running             0          3h58m
+azure-vote-front-84fdc57c5b-6p9rn   0/1     ContainerCreating   0          27s
+azure-vote-front-84fdc57c5b-7cs6q   1/1     Running             0          27s
+azure-vote-front-84fdc57c5b-82xhb   0/1     ContainerCreating   0          27s
+azure-vote-front-84fdc57c5b-bsptj   1/1     Running             0          27s
+azure-vote-front-84fdc57c5b-cjnbm   1/1     Running             0          3h58m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+azure-vote-back-7dbcd6c889-hzklm    1/1     Running   0          3h59m
+azure-vote-front-84fdc57c5b-6p9rn   1/1     Running   0          53s
+azure-vote-front-84fdc57c5b-7cs6q   1/1     Running   0          53s
+azure-vote-front-84fdc57c5b-82xhb   1/1     Running   0          53s
+azure-vote-front-84fdc57c5b-bsptj   1/1     Running   0          53s
+azure-vote-front-84fdc57c5b-cjnbm   1/1     Running   0          3h59m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az aks show --resource-group aks-rg-eus --name jvkAKSCluster --query kubernetesVersion --output table
+ValidationError: AADSTS50132: The session is not valid due the following reasons: password expiration or recent password change, SSO Artifact is invalid or expired, session is not fresh enough for application, or a silent sign-in request was sent but the user's session with Azure AD is invalid or has expired.
+Trace ID: 67432247-f6fd-4332-91c1-51ebd8b2c901
+Correlation ID: 21777085-84f2-48ba-9f39-1b7f0e414ff7
+Timestamp: 2020-09-23 10:51:58Z
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az login
+Authentication Error: "['access_denied']". Description: "["AADSTS90123: The token can't be issued because the identity or claim issuance provider denied the request. Response code: access_denied.\r\nTrace ID: 16d776d6-c0de-4b4b-a78a-ea35daf16801\r\nCorrelation ID: b7fa03b5-6c36-426c-8c7a-7fb33c3c08c7\r\nTimestamp: 2020-09-23 10:52:37Z"]"
+ValidationError: Login failed
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az login
+Authentication Error: "['access_denied']". Description: "["AADSTS90123: The token can't be issued because the identity or claim issuance provider denied the request. Response code: access_denied.\r\nTrace ID: 91671dbf-2b6b-49cb-9bd4-327a173b9d01\r\nCorrelation ID: ba8fec7e-59f2-4317-86b8-c487a7f6920c\r\nTimestamp: 2020-09-23 10:53:32Z"]"
+ValidationError: Login failed
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az login
+You have logged in. Now let us find all the subscriptions to which you have access...
+[
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "e8acc9e9-852e-4124-abe8-847a9b8c55dd",
+    "id": "48a08d01-ea4e-4437-aafc-20c306b1fcd7",
+    "isDefault": true,
+    "managedByTenants": [],
+    "name": "Azure Pass - Sponsorship",
+    "state": "Enabled",
+    "tenantId": "e8acc9e9-852e-4124-abe8-847a9b8c55dd",
+    "user": {
+      "name": "infotojvk@gmail.com",
+      "type": "user"
+    }
+  }
+]
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az aks show --resource-group aks-rg-eus --name jvkAKSCluster --query kubernetesVersion --output table
+Result
+--------
+1.17.9
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
+clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator configured
+rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader configured
+apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io configured
+serviceaccount/metrics-server configured
+deployment.apps/metrics-server configured
+service/metrics-server configured
+clusterrole.rbac.authorization.k8s.io/system:metrics-server configured
+clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server configured
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl autoscale deployment azure-vote-front --cpu-percent=50 --min=3 --max=10
+horizontalpodautoscaler.autoscaling/azure-vote-front autoscaled
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get hpa
+NAME               REFERENCE                     TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+azure-vote-front   Deployment/azure-vote-front   <unknown>/50%   3         10        5          43s
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get hpa
+NAME               REFERENCE                     TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+azure-vote-front   Deployment/azure-vote-front   <unknown>/50%   3         10        5          50s
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az aks scale --resource-group aks-rg-eus --name jvkAKSCluster --node-count=3
+{
+  "aadProfile": null,
+  "addonProfiles": {
+    "KubeDashboard": {
+      "config": null,
+      "enabled": true,
+      "identity": null
+    }
+  },
+  "agentPoolProfiles": [
+    {
+      "availabilityZones": null,
+      "count": 3,
+      "enableAutoScaling": null,
+      "enableNodePublicIp": false,
+      "maxCount": null,
+      "maxPods": 110,
+      "minCount": null,
+      "mode": "System",
+      "name": "nodepool1",
+      "nodeImageVersion": "AKSUbuntu-1604-2020.08.28",
+      "nodeLabels": {},
+      "nodeTaints": null,
+      "orchestratorVersion": "1.17.9",
+      "osDiskSizeGb": 128,
+      "osDiskType": "Managed",
+      "osType": "Linux",
+      "powerState": null,
+      "provisioningState": "Succeeded",
+      "proximityPlacementGroupId": null,
+      "scaleSetEvictionPolicy": null,
+      "scaleSetPriority": null,
+      "spotMaxPrice": null,
+      "tags": null,
+      "type": "VirtualMachineScaleSets",
+      "upgradeSettings": null,
+      "vmSize": "Standard_DS2_v2",
+      "vnetSubnetId": null
+    }
+  ],
+  "apiServerAccessProfile": null,
+  "autoScalerProfile": null,
+  "diskEncryptionSetId": null,
+  "dnsPrefix": "jvkAKSClus-aks-rg-eus-48a08d",
+  "enablePodSecurityPolicy": null,
+  "enableRbac": true,
+  "fqdn": "jvkaksclus-aks-rg-eus-48a08d-92115a02.hcp.eastus.azmk8s.io",
+  "id": "/subscriptions/48a08d01-ea4e-4437-aafc-20c306b1fcd7/resourcegroups/aks-rg-eus/providers/Microsoft.ContainerService/managedClusters/jvkAKSCluster",
+  "identity": null,
+  "identityProfile": null,
+  "kubernetesVersion": "1.17.9",
+  "linuxProfile": {
+    "adminUsername": "azureuser",
+    "ssh": {
+      "publicKeys": [
+        {
+          "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyrVBOIBMXUrTfRywno7Ba65g3512tKGKG0MfMH8voSRNAkTS1dCjlIqw7LoCuapTk8IVwVMsYBzeZw2fP/JbecEhSPvB3J9slcpDh01/Gm5+jkM/h9PhMbeLtl1gew0brxMwk97aSEBvNfZ9y+8OESPbsab0g+/DAE2xZ4GJmwPany+nb6uQsgUf+f7OGS7dFrmUPQ8tpbA2nQpC2g2S1q4Nh0Rl4nXDrt4NjcgyOTzBwNcAcv6EJFtT7ibJTDnk68e99eHzncJqbarhemcvjDaWXihRgJxzmwHhm0c5NHbUjFMDxGX2GvAiOs+uEijjwBVqBtkanO+IygucW3Xhr"
+        }
+      ]
+    }
+  },
+  "location": "eastus",
+  "maxAgentPools": 10,
+  "name": "jvkAKSCluster",
+  "networkProfile": {
+    "dnsServiceIp": "10.0.0.10",
+    "dockerBridgeCidr": "172.17.0.1/16",
+    "loadBalancerProfile": {
+      "allocatedOutboundPorts": null,
+      "effectiveOutboundIps": [
+        {
+          "id": "/subscriptions/48a08d01-ea4e-4437-aafc-20c306b1fcd7/resourceGroups/MC_aks-rg-eus_jvkAKSCluster_eastus/providers/Microsoft.Network/publicIPAddresses/8da4ff2e-e0a2-4b85-a6a3-a5445528a4c1",
+          "resourceGroup": "MC_aks-rg-eus_jvkAKSCluster_eastus"
+        }
+      ],
+      "idleTimeoutInMinutes": null,
+      "managedOutboundIps": {
+        "count": 1
+      },
+      "outboundIpPrefixes": null,
+      "outboundIps": null
+    },
+    "loadBalancerSku": "Standard",
+    "networkMode": null,
+    "networkPlugin": "kubenet",
+    "networkPolicy": null,
+    "outboundType": "loadBalancer",
+    "podCidr": "10.244.0.0/16",
+    "serviceCidr": "10.0.0.0/16"
+  },
+  "nodeResourceGroup": "MC_aks-rg-eus_jvkAKSCluster_eastus",
+  "powerState": null,
+  "privateFqdn": null,
+  "provisioningState": "Succeeded",
+  "resourceGroup": "aks-rg-eus",
+  "servicePrincipalProfile": {
+    "clientId": "464a7a40-042e-4522-8f29-f75bee23efb1",
+    "secret": null
+  },
+  "sku": {
+    "name": "Basic",
+    "tier": "Free"
+  },
+  "tags": null,
+  "type": "Microsoft.ContainerService/ManagedClusters",
+  "windowsProfile": null
+}
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get nodes
+NAME                                STATUS   ROLES   AGE     VERSION
+aks-nodepool1-10242395-vmss000000   Ready    agent   4h22m   v1.17.9
+aks-nodepool1-10242395-vmss000001   Ready    agent   4h22m   v1.17.9
+aks-nodepool1-10242395-vmss000002   Ready    agent   2m10s   v1.17.9
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ ls
+azure-vote/  azure-vote-all-in-one-redis.yaml  docker-compose.yaml  jenkins-tutorial/  LICENSE  README.md
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ vi azure-vote/azure-vote/config_file.cfg
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker-compose up --build -d
+Creating network "azure-voting-app-redis_default" with the default driver
+Building azure-vote-front
+Step 1/3 : FROM tiangolo/uwsgi-nginx-flask:python3.6
+ ---> a16ce562e863
+Step 2/3 : RUN pip install redis
+ ---> Using cache
+ ---> 5dd45ff1e765
+Step 3/3 : ADD /azure-vote /app
+ ---> 68763cdb1b95
+
+Successfully built 68763cdb1b95
+Successfully tagged azure-vote-front:latest
+Creating azure-vote-back  ... done
+Creating azure-vote-front ... done
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az acr list --resource-group aks-rg-eus --query "[].{acrLoginServer:loginServer}" --output table
+AcrLoginServer
+-----------------
+jvkacr.azurecr.io
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker images
+REPOSITORY                           TAG                 IMAGE ID            CREATED              SIZE
+azure-vote-front                     latest              68763cdb1b95        About a minute ago   944MB
+jvkacr.azurecr.io/azure-vote-front   v1                  f9c9034e5ef5        5 hours ago          944MB
+redis                                latest              84c5f6e03bf0        12 days ago          104MB
+tiangolo/uwsgi-nginx-flask           python3.6           a16ce562e863        5 weeks ago          944MB
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker tag azure-vote-front jvkacr.azurecr.io/azure-vote-front:v2
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker push jvkacr.azurecr.io/azure-vote-front:v2
+The push refers to repository [jvkacr.azurecr.io/azure-vote-front]
+514daea79704: Preparing
+c397b5c8d991: Preparing
+1971b933c82a: Preparing
+596464cb926b: Preparing
+07289a4a4d58: Preparing
+4249ef06ae69: Preparing
+e775b278161a: Preparing
+27d9a6169c9f: Preparing
+b9557a3d31d9: Preparing
+c8f52965417f: Preparing
+9cde96ca61c2: Preparing
+f3fd11fd6d6c: Preparing
+e553743c668b: Preparing
+88af765ea71f: Preparing
+b47c358499df: Preparing
+cbd550635f44: Preparing
+2efef025159b: Preparing
+3acbf6947195: Preparing
+f90fe4978ca2: Preparing
+88383b8e3cb5: Preparing
+e93627dfc607: Preparing
+8f23b00cc77f: Preparing
+e775b278161a: Waiting
+cf691a2ea3f9: Preparing
+3d3e92e98337: Preparing
+8967306e673e: Preparing
+27d9a6169c9f: Waiting
+9794a3b3ed45: Preparing
+b9557a3d31d9: Waiting
+5f77a51ade6a: Preparing
+e40d297cf5f8: Preparing
+c8f52965417f: Waiting
+9cde96ca61c2: Waiting
+f3fd11fd6d6c: Waiting
+e553743c668b: Waiting
+88af765ea71f: Waiting
+b47c358499df: Waiting
+cbd550635f44: Waiting
+2efef025159b: Waiting
+3acbf6947195: Waiting
+f90fe4978ca2: Waiting
+88383b8e3cb5: Waiting
+e93627dfc607: Waiting
+8f23b00cc77f: Waiting
+cf691a2ea3f9: Waiting
+3d3e92e98337: Waiting
+8967306e673e: Waiting
+9794a3b3ed45: Waiting
+5f77a51ade6a: Waiting
+e40d297cf5f8: Waiting
+4249ef06ae69: Waiting
+unauthorized: authentication required
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az acr login --name jvkacr
+Login Succeeded
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker push jvkacr.azurecr.io/azure-vote-front:v2
+The push refers to repository [jvkacr.azurecr.io/azure-vote-front]
+514daea79704: Preparing
+c397b5c8d991: Preparing
+1971b933c82a: Preparing
+596464cb926b: Preparing
+07289a4a4d58: Preparing
+4249ef06ae69: Preparing
+e775b278161a: Preparing
+27d9a6169c9f: Preparing
+b9557a3d31d9: Preparing
+c8f52965417f: Preparing
+9cde96ca61c2: Preparing
+f3fd11fd6d6c: Preparing
+e553743c668b: Preparing
+88af765ea71f: Preparing
+b47c358499df: Preparing
+cbd550635f44: Preparing
+2efef025159b: Preparing
+3acbf6947195: Preparing
+f90fe4978ca2: Preparing
+88383b8e3cb5: Preparing
+e93627dfc607: Preparing
+8f23b00cc77f: Preparing
+cf691a2ea3f9: Preparing
+3d3e92e98337: Preparing
+8967306e673e: Preparing
+9794a3b3ed45: Preparing
+5f77a51ade6a: Preparing
+e40d297cf5f8: Preparing
+4249ef06ae69: Waiting
+e775b278161a: Waiting
+27d9a6169c9f: Waiting
+b9557a3d31d9: Waiting
+c8f52965417f: Waiting
+88383b8e3cb5: Waiting
+e93627dfc607: Waiting
+9cde96ca61c2: Waiting
+f3fd11fd6d6c: Waiting
+8f23b00cc77f: Waiting
+cf691a2ea3f9: Waiting
+3d3e92e98337: Waiting
+e553743c668b: Waiting
+88af765ea71f: Waiting
+8967306e673e: Waiting
+b47c358499df: Waiting
+cbd550635f44: Waiting
+9794a3b3ed45: Waiting
+2efef025159b: Waiting
+3acbf6947195: Waiting
+5f77a51ade6a: Waiting
+f90fe4978ca2: Waiting
+e40d297cf5f8: Waiting
+1971b933c82a: Layer already exists
+c397b5c8d991: Layer already exists
+07289a4a4d58: Layer already exists
+596464cb926b: Layer already exists
+4249ef06ae69: Layer already exists
+e775b278161a: Layer already exists
+27d9a6169c9f: Layer already exists
+b9557a3d31d9: Layer already exists
+c8f52965417f: Layer already exists
+9cde96ca61c2: Layer already exists
+f3fd11fd6d6c: Layer already exists
+e553743c668b: Layer already exists
+514daea79704: Pushed
+b47c358499df: Layer already exists
+88af765ea71f: Layer already exists
+cbd550635f44: Layer already exists
+2efef025159b: Layer already exists
+f90fe4978ca2: Layer already exists
+88383b8e3cb5: Layer already exists
+3acbf6947195: Layer already exists
+e93627dfc607: Layer already exists
+8f23b00cc77f: Layer already exists
+cf691a2ea3f9: Layer already exists
+3d3e92e98337: Layer already exists
+8967306e673e: Layer already exists
+9794a3b3ed45: Layer already exists
+5f77a51ade6a: Layer already exists
+e40d297cf5f8: Layer already exists
+v2: digest: sha256:552c188b575ec52efd93b728559176faf29ae44fae30f66d56bd8d080dec6b15 size: 6175
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl set image deployment azure-vote-front azure-vote-front=jvkacr.azurecr.io/azure-vote-front:v2
+deployment.apps/azure-vote-front image updated
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get pods
+NAME                                READY   STATUS              RESTARTS   AGE
+azure-vote-back-7dbcd6c889-hzklm    1/1     Running             0          4h19m
+azure-vote-front-5d765f8c8f-58f8t   0/1     ContainerCreating   0          10s
+azure-vote-front-5d765f8c8f-gwql2   1/1     Running             0          10s
+azure-vote-front-84fdc57c5b-6p9rn   1/1     Running             0          21m
+azure-vote-front-84fdc57c5b-82xhb   0/1     Terminating         0          21m
+azure-vote-front-84fdc57c5b-cjnbm   1/1     Running             0          4h19m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get pods
+NAME                                READY   STATUS              RESTARTS   AGE
+azure-vote-back-7dbcd6c889-hzklm    1/1     Running             0          4h19m
+azure-vote-front-5d765f8c8f-58f8t   0/1     ContainerCreating   0          21s
+azure-vote-front-5d765f8c8f-gwql2   1/1     Running             0          21s
+azure-vote-front-5d765f8c8f-l8sgn   0/1     ContainerCreating   0          10s
+azure-vote-front-84fdc57c5b-6p9rn   1/1     Running             0          21m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get pods
+NAME                                READY   STATUS              RESTARTS   AGE
+azure-vote-back-7dbcd6c889-hzklm    1/1     Running             0          4h20m
+azure-vote-front-5d765f8c8f-58f8t   0/1     ContainerCreating   0          28s
+azure-vote-front-5d765f8c8f-gwql2   1/1     Running             0          28s
+azure-vote-front-5d765f8c8f-l8sgn   0/1     ContainerCreating   0          17s
+azure-vote-front-84fdc57c5b-6p9rn   1/1     Running             0          21m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+azure-vote-back-7dbcd6c889-hzklm    1/1     Running   0          4h20m
+azure-vote-front-5d765f8c8f-58f8t   1/1     Running   0          40s
+azure-vote-front-5d765f8c8f-gwql2   1/1     Running   0          40s
+azure-vote-front-5d765f8c8f-l8sgn   1/1     Running   0          29s
+azure-vote-front-84fdc57c5b-6p9rn   1/1     Running   0          21m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl scale --replicas=3 deployment/azure-vote-front
+deployment.apps/azure-vote-front scaled
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+azure-vote-back-7dbcd6c889-hzklm    1/1     Running   0          4h21m
+azure-vote-front-5d765f8c8f-58f8t   1/1     Running   0          104s
+azure-vote-front-5d765f8c8f-gwql2   1/1     Running   0          104s
+azure-vote-front-5d765f8c8f-l8sgn   1/1     Running   0          93s
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get svc
+NAME               TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
+azure-vote-back    ClusterIP      10.0.232.93    <none>         6379/TCP       4h21m
+azure-vote-front   LoadBalancer   10.0.111.212   52.142.20.22   80:30053/TCP   4h21m
+kubernetes         ClusterIP      10.0.0.1       <none>         443/TCP        4h33m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get svc azure-vote-front
+NAME               TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
+azure-vote-front   LoadBalancer   10.0.111.212   52.142.20.22   80:30053/TCP   4h22m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az aks get-upgrades --resource-group aks-rg-eus --name jvkAKSCluster
+{
+  "agentPoolProfiles": null,
+  "controlPlaneProfile": {
+    "kubernetesVersion": "1.17.9",
+    "name": null,
+    "osType": "Linux",
+    "upgrades": [
+      {
+        "isPreview": null,
+        "kubernetesVersion": "1.18.6"
+      },
+      {
+        "isPreview": null,
+        "kubernetesVersion": "1.18.8"
+      }
+    ]
+  },
+  "id": "/subscriptions/48a08d01-ea4e-4437-aafc-20c306b1fcd7/resourcegroups/aks-rg-eus/providers/Microsoft.ContainerService/managedClusters/jvkAKSCluster/upgradeprofiles/default",
+  "name": "default",
+  "resourceGroup": "aks-rg-eus",
+  "type": "Microsoft.ContainerService/managedClusters/upgradeprofiles"
+}
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
