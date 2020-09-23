@@ -1,0 +1,523 @@
+Logs
+-----
+
+
+msadmin@Docker-VM MINGW64 ~/Desktop
+$ mkdir aks
+
+msadmin@Docker-VM MINGW64 ~/Desktop
+$ cd aks
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks
+$ git clone https://github.com/Azure-Samples/azure-voting-app-redis.git
+Cloning into 'azure-voting-app-redis'...
+remote: Enumerating objects: 166, done.
+remote: Total 166 (delta 0), reused 0 (delta 0), pack-reused 166
+Receiving objects: 100% (166/166), 34.99 KiB | 143.00 KiB/s, done.
+Resolving deltas: 100% (74/74), done.
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks
+$ cd azure-voting-app-redis
+\
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ ls
+azure-vote/  azure-vote-all-in-one-redis.yaml  docker-compose.yaml  jenkins-tutorial/  LICENSE  README.md
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker-compose up -d
+Creating network "azure-voting-app-redis_default" with the default driver
+Pulling azure-vote-back (redis:)...
+latest: Pulling from library/redis
+Digest: sha256:1cfb205a988a9dae5f025c57b92e9643ec0e7ccff6e66bc639d8a5f95bba928c
+Status: Downloaded newer image for redis:latest
+Building azure-vote-front
+Step 1/3 : FROM tiangolo/uwsgi-nginx-flask:python3.6
+python3.6: Pulling from tiangolo/uwsgi-nginx-flask
+Digest: sha256:806a54891bddfe2ffacaa224550ab93b38402e497b6bc96870f8af752c744c6d
+Status: Downloaded newer image for tiangolo/uwsgi-nginx-flask:python3.6
+ ---> a16ce562e863
+Step 2/3 : RUN pip install redis
+ ---> Running in e61c4e649757
+Collecting redis
+  Downloading redis-3.5.3-py2.py3-none-any.whl (72 kB)
+Installing collected packages: redis
+Successfully installed redis-3.5.3
+WARNING: You are using pip version 20.1; however, version 20.2.3 is available.
+You should consider upgrading via the '/usr/local/bin/python -m pip install --upgrade pip' command.
+Removing intermediate container e61c4e649757
+ ---> 5dd45ff1e765
+Step 3/3 : ADD /azure-vote /app
+ ---> f9c9034e5ef5
+
+Successfully built f9c9034e5ef5
+Successfully tagged azure-vote-front:latest
+Image for service azure-vote-front was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Creating azure-vote-front ... done
+Creating azure-vote-back  ... done
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker images
+REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
+azure-vote-front             latest              f9c9034e5ef5        19 seconds ago      944MB
+redis                        latest              84c5f6e03bf0        12 days ago         104MB
+tiangolo/uwsgi-nginx-flask   python3.6           a16ce562e863        5 weeks ago         944MB
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                           NAMES
+23e5ce17d878        redis               "docker-entrypoint.sΓÇª"   39 seconds ago      Up 37 seconds       0.0.0.0:6379->6379/tcp          azure-vote-back
+20f32200c214        azure-vote-front    "/entrypoint.sh /staΓÇª"   39 seconds ago      Up 37 seconds       443/tcp, 0.0.0.0:8080->80/tcp   azure-vote-front
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker-compose down
+Stopping azure-vote-back  ... done
+Stopping azure-vote-front ... done
+Removing azure-vote-back  ... done
+Removing azure-vote-front ... done
+Removing network azure-voting-app-redis_default
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az login
+You have logged in. Now let us find all the subscriptions to which you have access...
+[
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "e8acc9e9-852e-4124-abe8-847a9b8c55dd",
+    "id": "48a08d01-ea4e-4437-aafc-20c306b1fcd7",
+    "isDefault": true,
+    "managedByTenants": [],
+    "name": "Azure Pass - Sponsorship",
+    "state": "Enabled",
+    "tenantId": "e8acc9e9-852e-4124-abe8-847a9b8c55dd",
+    "user": {
+      "name": "infotojvk@gmail.com",
+      "type": "user"
+    }
+  }
+]
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az group create --name aks-rg-eus --location eastus
+{
+  "id": "/subscriptions/48a08d01-ea4e-4437-aafc-20c306b1fcd7/resourceGroups/aks-rg-eus",
+  "location": "eastus",
+  "managedBy": null,
+  "name": "aks-rg-eus",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+}
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az acr create --resource-group aks-rg-eus --name jvk-acr --sku Basic
+ValidationError: Parameter 'registry_name' must conform to the following pattern: '^[a-zA-Z0-9]*$'.
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az acr create --resource-group aks-rg-eus --name jvkacr --sku Basic
+{
+  "adminUserEnabled": false,
+  "creationDate": "2020-09-23T06:23:43.746627+00:00",
+  "dataEndpointEnabled": false,
+  "dataEndpointHostNames": [],
+  "encryption": {
+    "keyVaultProperties": null,
+    "status": "disabled"
+  },
+  "id": "/subscriptions/48a08d01-ea4e-4437-aafc-20c306b1fcd7/resourceGroups/aks-rg-eus/providers/Microsoft.ContainerRegistry/registries/jvkacr",
+  "identity": null,
+  "location": "eastus",
+  "loginServer": "jvkacr.azurecr.io",
+  "name": "jvkacr",
+  "networkRuleSet": null,
+  "policies": {
+    "quarantinePolicy": {
+      "status": "disabled"
+    },
+    "retentionPolicy": {
+      "days": 7,
+      "lastUpdatedTime": "2020-09-23T06:23:46.154318+00:00",
+      "status": "disabled"
+    },
+    "trustPolicy": {
+      "status": "disabled",
+      "type": "Notary"
+    }
+  },
+  "privateEndpointConnections": [],
+  "provisioningState": "Succeeded",
+  "publicNetworkAccess": "Enabled",
+  "resourceGroup": "aks-rg-eus",
+  "sku": {
+    "name": "Basic",
+    "tier": "Basic"
+  },
+  "status": null,
+  "storageAccount": null,
+  "systemData": {
+    "createdAt": "2020-09-23T06:23:43.7466277+00:00",
+    "createdBy": "infotojvk@gmail.com",
+    "createdByType": "User",
+    "lastModifiedAt": "2020-09-23T06:23:43.7466277+00:00",
+    "lastModifiedBy": "infotojvk@gmail.com",
+    "lastModifiedByType": "User"
+  },
+  "tags": {},
+  "type": "Microsoft.ContainerRegistry/registries"
+}
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az acr login --name jvkacr
+Login Succeeded
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker images
+REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
+azure-vote-front             latest              f9c9034e5ef5        8 minutes ago       944MB
+redis                        latest              84c5f6e03bf0        12 days ago         104MB
+tiangolo/uwsgi-nginx-flask   python3.6           a16ce562e863        5 weeks ago         944MB
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az acr list --resource-group aks-rg-eus --query "[].{acrLoginServer:loginServer}" --output table
+AcrLoginServer
+-----------------
+jvkacr.azurecr.io
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker tag azure-vote-front jvkacr.azurecr.io/azure-vote-front:v1
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker images
+REPOSITORY                           TAG                 IMAGE ID            CREATED             SIZE
+azure-vote-front                     latest              f9c9034e5ef5        10 minutes ago      944MB
+jvkacr.azurecr.io/azure-vote-front   v1                  f9c9034e5ef5        10 minutes ago      944MB
+redis                                latest              84c5f6e03bf0        12 days ago         104MB
+tiangolo/uwsgi-nginx-flask           python3.6           a16ce562e863        5 weeks ago         944MB
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ docker push jvkacr.azurecr.io/azure-vote-front:v1
+The push refers to repository [jvkacr.azurecr.io/azure-vote-front]
+3ee4fb380894: Preparing
+c397b5c8d991: Preparing
+1971b933c82a: Preparing
+596464cb926b: Preparing
+07289a4a4d58: Preparing
+4249ef06ae69: Preparing
+e775b278161a: Preparing
+27d9a6169c9f: Preparing
+b9557a3d31d9: Preparing
+c8f52965417f: Preparing
+9cde96ca61c2: Preparing
+f3fd11fd6d6c: Preparing
+e553743c668b: Preparing
+88af765ea71f: Preparing
+b47c358499df: Preparing
+cbd550635f44: Preparing
+2efef025159b: Preparing
+3acbf6947195: Preparing
+f90fe4978ca2: Preparing
+88383b8e3cb5: Preparing
+e93627dfc607: Preparing
+8f23b00cc77f: Preparing
+cf691a2ea3f9: Preparing
+3d3e92e98337: Preparing
+8967306e673e: Preparing
+9794a3b3ed45: Preparing
+5f77a51ade6a: Preparing
+e40d297cf5f8: Preparing
+4249ef06ae69: Waiting
+f90fe4978ca2: Waiting
+88383b8e3cb5: Waiting
+e93627dfc607: Waiting
+8f23b00cc77f: Waiting
+cf691a2ea3f9: Waiting
+3d3e92e98337: Waiting
+8967306e673e: Waiting
+9794a3b3ed45: Waiting
+e40d297cf5f8: Waiting
+e775b278161a: Waiting
+27d9a6169c9f: Waiting
+b9557a3d31d9: Waiting
+c8f52965417f: Waiting
+9cde96ca61c2: Waiting
+f3fd11fd6d6c: Waiting
+e553743c668b: Waiting
+88af765ea71f: Waiting
+b47c358499df: Waiting
+cbd550635f44: Waiting
+2efef025159b: Waiting
+3acbf6947195: Waiting
+5f77a51ade6a: Waiting
+3ee4fb380894: Pushed
+1971b933c82a: Pushed
+07289a4a4d58: Pushed
+c397b5c8d991: Pushed
+e775b278161a: Pushed
+b9557a3d31d9: Pushed
+4249ef06ae69: Pushed
+596464cb926b: Pushed
+27d9a6169c9f: Pushed
+c8f52965417f: Pushed
+e553743c668b: Pushed
+f3fd11fd6d6c: Pushed
+b47c358499df: Pushed
+9cde96ca61c2: Pushed
+88af765ea71f: Pushed
+3acbf6947195: Pushed
+2efef025159b: Pushed
+f90fe4978ca2: Pushed
+88383b8e3cb5: Pushed
+e93627dfc607: Pushed
+cbd550635f44: Pushed
+cf691a2ea3f9: Pushed
+8f23b00cc77f: Pushed
+9794a3b3ed45: Pushed
+5f77a51ade6a: Pushed
+8967306e673e: Pushed
+e40d297cf5f8: Pushed
+3d3e92e98337: Pushed
+v1: digest: sha256:b4112a3e29209bfd200761e5504fc5e04119f7115d2d810be4cedfd317dfa67e size: 6175
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az acr repository list --name jvkacr --output table
+Result
+----------------
+azure-vote-front
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az acr repository --show-tags --name jvkacr --repository azure-vote-front --output table
+CommandNotFoundError: 'jvkacr' is misspelled or not recognized by the system.
+Still stuck? Run 'az acr repository --help' to view all commands or go to 'https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest' to learn more
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az acr repository show-tags --name jvkacr --repository azure-vote-front --output table
+Result
+--------
+v1
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az aks create \
+>     --resource-group aks-rg-eus \
+>     --name jvkAKSCluster \
+>     --node-count 2 \
+>     --generate-ssh-keys \
+>     --attach-acr jvk
+SSH key files 'C:\Users\msadmin\.ssh\id_rsa' and 'C:\Users\msadmin\.ssh\id_rsa.pub' have been generated under ~/.ssh to allow SSH access to the VM. If using machines without permanent storage like Azure Cloud Shell without an attached file share, back up your keys to a safe location
+Finished service principal creation[##################################]  100.0000%ValidationError: The resource with name 'jvk' and type 'Microsoft.ContainerRegistry/registries' could not be found in subscription 'Azure Pass - Sponsorship (48a08d01-ea4e-4437-aafc-20c306b1fcd7)'.
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az aks create \
+>     --resource-group aks-rg-eus \
+>     --name jvkAKSCluster \
+>     --node-count 2 \
+>     --generate-ssh-keys \
+>     --attach-acr jvkacr
+AAD role propagation done[############################################]  100.0000%{
+  "aadProfile": null,
+  "addonProfiles": {
+    "KubeDashboard": {
+      "config": null,
+      "enabled": true,
+      "identity": null
+    }
+  },
+  "agentPoolProfiles": [
+    {
+      "availabilityZones": null,
+      "count": 2,
+      "enableAutoScaling": null,
+      "enableNodePublicIp": false,
+      "maxCount": null,
+      "maxPods": 110,
+      "minCount": null,
+      "mode": "System",
+      "name": "nodepool1",
+      "nodeImageVersion": "AKSUbuntu-1604-2020.08.28",
+      "nodeLabels": {},
+      "nodeTaints": null,
+      "orchestratorVersion": "1.17.9",
+      "osDiskSizeGb": 128,
+      "osDiskType": "Managed",
+      "osType": "Linux",
+      "powerState": null,
+      "provisioningState": "Succeeded",
+      "proximityPlacementGroupId": null,
+      "scaleSetEvictionPolicy": null,
+      "scaleSetPriority": null,
+      "spotMaxPrice": null,
+      "tags": null,
+      "type": "VirtualMachineScaleSets",
+      "upgradeSettings": null,
+      "vmSize": "Standard_DS2_v2",
+      "vnetSubnetId": null
+    }
+  ],
+  "apiServerAccessProfile": null,
+  "autoScalerProfile": null,
+  "diskEncryptionSetId": null,
+  "dnsPrefix": "jvkAKSClus-aks-rg-eus-48a08d",
+  "enablePodSecurityPolicy": null,
+  "enableRbac": true,
+  "fqdn": "jvkaksclus-aks-rg-eus-48a08d-92115a02.hcp.eastus.azmk8s.io",
+  "id": "/subscriptions/48a08d01-ea4e-4437-aafc-20c306b1fcd7/resourcegroups/aks-rg-eus/providers/Microsoft.ContainerService/managedClusters/jvkAKSCluster",
+  "identity": null,
+  "identityProfile": null,
+  "kubernetesVersion": "1.17.9",
+  "linuxProfile": {
+    "adminUsername": "azureuser",
+    "ssh": {
+      "publicKeys": [
+        {
+          "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyrVBOIBMXUrTfRywno7Ba65g3512tKGKG0MfMH8voSRNAkTS1dCjlIqw7LoCuapTk8IVwVMsYBzeZw2fP/JbecEhSPvB3J9slcpDh01/Gm5+jkM/h9PhMbeLtl1gew0brxMwk97aSEBvNfZ9y+8OESPbsab0g+/DAE2xZ4GJmwPany+nb6uQsgUf+f7OGS7dFrmUPQ8tpbA2nQpC2g2S1q4Nh0Rl4nXDrt4NjcgyOTzBwNcAcv6EJFtT7ibJTDnk68e99eHzncJqbarhemcvjDaWXihRgJxzmwHhm0c5NHbUjFMDxGX2GvAiOs+uEijjwBVqBtkanO+IygucW3Xhr"
+        }
+      ]
+    }
+  },
+  "location": "eastus",
+  "maxAgentPools": 10,
+  "name": "jvkAKSCluster",
+  "networkProfile": {
+    "dnsServiceIp": "10.0.0.10",
+    "dockerBridgeCidr": "172.17.0.1/16",
+    "loadBalancerProfile": {
+      "allocatedOutboundPorts": null,
+      "effectiveOutboundIps": [
+        {
+          "id": "/subscriptions/48a08d01-ea4e-4437-aafc-20c306b1fcd7/resourceGroups/MC_aks-rg-eus_jvkAKSCluster_eastus/providers/Microsoft.Network/publicIPAddresses/8da4ff2e-e0a2-4b85-a6a3-a5445528a4c1",
+          "resourceGroup": "MC_aks-rg-eus_jvkAKSCluster_eastus"
+        }
+      ],
+      "idleTimeoutInMinutes": null,
+      "managedOutboundIps": {
+        "count": 1
+      },
+      "outboundIpPrefixes": null,
+      "outboundIps": null
+    },
+    "loadBalancerSku": "Standard",
+    "networkMode": null,
+    "networkPlugin": "kubenet",
+    "networkPolicy": null,
+    "outboundType": "loadBalancer",
+    "podCidr": "10.244.0.0/16",
+    "serviceCidr": "10.0.0.0/16"
+  },
+  "nodeResourceGroup": "MC_aks-rg-eus_jvkAKSCluster_eastus",
+  "powerState": null,
+  "privateFqdn": null,
+  "provisioningState": "Succeeded",
+  "resourceGroup": "aks-rg-eus",
+  "servicePrincipalProfile": {
+    "clientId": "464a7a40-042e-4522-8f29-f75bee23efb1",
+    "secret": null
+  },
+  "sku": {
+    "name": "Basic",
+    "tier": "Free"
+  },
+  "tags": null,
+  "type": "Microsoft.ContainerService/ManagedClusters",
+  "windowsProfile": null
+}
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az aks install-cli
+Downloading client to "C:\Users\msadmin\.azure-kubectl\kubectl.exe" from "https://storage.googleapis.com/kubernetes-release/release/v1.19.2/bin/windows/amd64/kubectl.exe"
+Please add "C:\Users\msadmin\.azure-kubectl" to your search PATH so the `kubectl.exe` can be found. 2 options:
+    1. Run "set PATH=%PATH%;C:\Users\msadmin\.azure-kubectl" or "$env:path += 'C:\Users\msadmin\.azure-kubectl'" for PowerShell. This is good for the current command session.
+    2. Update system PATH environment variable by following "Control Panel->System->Advanced->Environment Variables", and re-open the command window. You only need to do it once
+Downloading client to "C:\Users\msadmin\AppData\Local\Temp\tmpcv8vph0q\kubelogin.zip" from "https://github.com/Azure/kubelogin/releases/download/v0.0.6/kubelogin.zip"
+Please add "C:\Users\msadmin\.azure-kubelogin" to your search PATH so the `kubelogin.exe` can be found. 2 options:
+    1. Run "set PATH=%PATH%;C:\Users\msadmin\.azure-kubelogin" or "$env:path += 'C:\Users\msadmin\.azure-kubelogin'" for PowerShell. This is good for the current command session.
+    2. Update system PATH environment variable by following "Control Panel->System->Advanced->Environment Variables", and re-open the command window. You only need to do it once
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ set PATH=%PATH%;C:\Users\msadmin\.azure-kubectl
+bash: C:Usersmsadmin.azure-kubectl: command not found
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ $env:path += 'C:\Users\msadmin\.azure-kubectl'
+bash: :path: command not found
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az aks get-credentials --resource-group aks-rg-eus --name jvkAKSCluster
+Merged "jvkAKSCluster" as current context in C:\Users\msadmin\.kube\config
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get nodes
+NAME                                STATUS   ROLES   AGE     VERSION
+aks-nodepool1-10242395-vmss000000   Ready    agent   6m26s   v1.17.9
+aks-nodepool1-10242395-vmss000001   Ready    agent   6m30s   v1.17.9
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ az acr list --resource-group aks-rg-eus --query "[].{acrLoginServer:loginServer}" --output table
+AcrLoginServer
+-----------------
+jvkacr.azurecr.io
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ ls
+azure-vote/  azure-vote-all-in-one-redis.yaml  docker-compose.yaml  jenkins-tutorial/  LICENSE  README.md
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ vi azure-vote-all-in-one-redis.yaml
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ vi azure-vote-all-in-one-redis.yaml
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ vi azure-vote-all-in-one-redis.yaml
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ vi azure-vote-all-in-one-redis.yaml
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ ls
+azure-vote/  azure-vote-all-in-one-redis.yaml  docker-compose.yaml  jenkins-tutorial/  LICENSE  README.md
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl apply -f azure-vote-all-in-one-redis.yaml
+deployment.apps/azure-vote-back created
+service/azure-vote-back created
+deployment.apps/azure-vote-front created
+service/azure-vote-front created
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get service
+NAME               TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
+azure-vote-back    ClusterIP      10.0.232.93    <none>         6379/TCP       30s
+azure-vote-front   LoadBalancer   10.0.111.212   52.142.20.22   80:30053/TCP   29s
+kubernetes         ClusterIP      10.0.0.1       <none>         443/TCP        12m
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$ kubectl get service azure-vote-front --watch
+NAME               TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
+azure-vote-front   LoadBalancer   10.0.111.212   52.142.20.22   80:30053/TCP   55s
+
+msadmin@Docker-VM MINGW64 ~/Desktop/aks/azure-voting-app-redis (master)
+$
