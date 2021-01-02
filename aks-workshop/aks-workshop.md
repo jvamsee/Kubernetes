@@ -886,7 +886,7 @@ Before you can create and manage DNS records, a DNS Zone is required. Create an 
 ```
 az network dns zone create \
   --resource-group aksworkshop \
-  --name aks.dev
+  --name devopssource.com
 ```
 
 
@@ -899,7 +899,7 @@ The snippet generates a wildcard entry (by setting the name attribute to @, if y
  az network dns record-set a add-record \
    --resource-group aksworkshop \
    --record-set-name @ \
-   --zone-name aks.dev \
+   --zone-name devopssource.com \
    --ipv4-address 1.1.1.1
  ```
  
@@ -908,7 +908,7 @@ Having the temporary A record in place, go ahead and issue an update command and
 ```
 az network dns record-set a update --name @ \
   --resource-group aksworkshop \
-  --zone-name aks.dev \
+  --zone-name devopssource.com \
   --target-resource $PUBLIC_IP_ID
   ```
    
@@ -929,7 +929,7 @@ The custom domain needs to point to Azures Nameservers. You can query the namese
 ```
 az network dns zone show \
   --resource-group aksworkshop \
-  --name aks.dev \
+  --name devopssource.com \
   --query nameServers
 ```
 
