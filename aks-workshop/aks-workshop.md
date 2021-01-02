@@ -463,6 +463,7 @@ So first of all I will create a blank yaml file
 ###
 code ratings-web-deployment.yaml
 --------------------------------
+```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -492,7 +493,7 @@ spec:
 	      limits: # maximum resources allocated
 		    cpu: 500m
 			memory: 512Mi
-
+```
 ------------------------------
 
 
@@ -518,6 +519,7 @@ Let's say the deployement is successful for ratings-web deployment. Now I will h
 ###
 code ratings-web-service.yaml
 -----------------------------
+```
 apiVersion: v1
 kind: Service
 metadata:
@@ -530,7 +532,7 @@ spec:
     port: 80
 	targetPort: 8080
   type: LoadBalancer
-
+```
 -----------------------------
 
 
@@ -653,6 +655,7 @@ I will have to have an ingress resource. The ingress resources where we specify 
 ###
 code ratings-web-ingress.yaml
 -----------------------------
+```
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -668,7 +671,7 @@ spec:
           serviceName: ratings-web
           servicePort:80
         path: /
-
+```
 
 In this file I need to update ingress IP value in the host key with the public IP of the ingress that we retrieved earlier. This value would allow you to access the ingress via hostname instead of an IP address. 
 
@@ -715,6 +718,7 @@ kubectl get pods --namespace cert-manager
 ###
 code cluster-issuer.yaml
 ------------------------
+```
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
@@ -729,6 +733,7 @@ spec:
     - http01:
         ingress:
           class: nginx
+```
 
 ```
 kubectl apply \
@@ -739,6 +744,7 @@ kubectl apply \
 ###
 code ratings-web-ingress.yaml
 -----------------------------
+```
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -761,7 +767,7 @@ spec:
           serviceName: ratings-web
           servicePort: 80
         path: /
-
+```
 
 ```
 kubectl apply \
@@ -828,6 +834,7 @@ So let me create a file called logreader-rbac.yaml by using the integrated scrip
 ###
 code logreader-rbac.yaml
 ------------------------
+```
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -856,5 +863,6 @@ subjects:
 - kind: User
   name: clusterUser
   apiGroup: rbac.authorization.k8s.io
-
+  
+```
 
