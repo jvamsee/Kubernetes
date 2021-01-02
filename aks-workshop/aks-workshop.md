@@ -876,3 +876,63 @@ subjects:
   
 ```
 
+
+### Azure DNS
+
+Create a DNS Zone in Azure
+
+Before you can create and manage DNS records, a DNS Zone is required. Create an Azure DNS zone the domain of your choice (I use ):
+
+```
+az network dns zone create \
+  --resource-group aksworkshop \
+  --name aks.dev
+```
+
+
+Create the A Record for the sub-domain
+Having the Azure DNS zone in place, a temporary A record has to be created. A temporary record is required because it is currently not possible to link a new A record immediately to an existing Azure resource.
+
+The snippet generates a wildcard entry (by setting the name attribute to @, if you want to point just a subdomain to your public IP, provide the subdomain as name eg.: www)
+
+```
+ az network dns record-set a add-record \
+   --resource-group aksworkshop \
+   --record-set-name @ \
+   --zone-name aks.dev \
+   --ipv4-address 1.1.1.1
+ ```
+ 
+Having the temporary A record in place, go ahead and issue an update command and point the A record finally to the existing Azure resource.
+
+```
+az network dns record-set a update --name @ \
+  --resource-group aksworkshop \
+  --zone-name aks.dev \
+  --target-resource $PUBLIC_IP_ID
+  ```
+   
+ 
+ Query Azure Resource ID with Azure CLI
+When creating services of type LoadBalancer in AKS, Kubernetes Cloud Controller provisions a new public IP within Azure. We can query this public IP address with Azure CLI az. The snippet below stores the Azure resource identifier as temporary environment variable.
+
+```
+PUBLIC_IP_ID=$(az network public-ip list --query "[?ipAddress=='52.151.243.189'].id" -o tsv)
+```
+
+At this point, the created variable PUBLIC_IP_ID contains something like /subscriptions/subid/resourceGroups/mcrgname/providers/Microsoft.Network/publicIPAddresses/ipid.
+
+
+Query Nameservers for the Azure DNS Zone
+The custom domain needs to point to Azures Nameservers. You can query the nameservers from the DNS Zone like this:
+
+```
+az network dns zone show \
+  --resource-group aksworkshop \
+  --name aks.dev \
+  --query nameServers
+```
+
+Link your Domain to Azure Nameservers
+Finally, configure your domain settings and point to Azures Nameservers. Once DNS propagation took place, public traffic will be routed to the Ingress service of your AKS cluster.
+
