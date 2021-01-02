@@ -307,7 +307,7 @@ We can just for a simplified creation in editor you can launch the editor by run
 ###
 code rating-api-deployment.yaml
 ---------------------------------
-
+```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -348,7 +348,7 @@ spec:
 		  httpGet:
 		    port: 3000
 			path: /healthz
-
+```
 -------------------------------
 
 ```
@@ -385,6 +385,7 @@ I'm going to create a manifest file for the Kubernetes service called yaml and t
 ###
 code ratings-api-service.yaml
 -----------------------------
+```
 apiVersion: v1
 kind: Service
 metadata:
@@ -397,7 +398,7 @@ spec:
     port: 80
     targetPort: 3000
   type: ClusterIP
-  
+```
 ---------------------------
 
 
