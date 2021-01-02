@@ -1,9 +1,4 @@
-
-
-
-
-
-
+# AKS WORKSHOP
 Website Components:
 - Web frontend
 - Document database that stores captured data
@@ -18,7 +13,7 @@ The company most used Kubernetes as compute platform.
 
 ### Step-1
 
-## Parameters:
+### Parameters:
 
 REGION_NAME=eastus
 RESOURCE_GROUP=aksworkshop
@@ -30,14 +25,14 @@ AKS_CLUSTER_NAME=aksworkshop-9865
 ACR_NAME=acr28364
 
 
-## Create Resource Group
+### Create Resource Group
 
 az group create \
   --name $RESOURCE_GROUP \
   --location $REGION_NAME
 
 
-## Networking
+### Networking
 
 We have two networking models.
 	1. Kubenet networking
@@ -54,7 +49,7 @@ First I will create VNet and Subnet. And Pods deployed in the cluster, will be a
 
 
 
-## Creating VNet and Subnet
+### Creating VNet and Subnet
 
 az network vnet create \
   --resource-group $RESOURCE_GROUP \
@@ -65,7 +60,8 @@ az network vnet create \
   --subnet-prefixes 10.240.0.0/16
 
 
-## Storing Subnet id
+### Storing Subnet id
+
 SUBNET_ID=$(az network vnet subnet show \
   --resource-group $RESOURCE_GROUP \
   --vnet-name $VNET_NAME \
