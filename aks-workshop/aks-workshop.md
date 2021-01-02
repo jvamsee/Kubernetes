@@ -16,12 +16,16 @@ The company most used Kubernetes as compute platform.
 ### Parameters:
 
 REGION_NAME=eastus
+
 RESOURCE_GROUP=aksworkshop
+
 SUBNET_NAME=aks-subnet
+
 VNET_NAME=aks-vnet
 
 
 AKS_CLUSTER_NAME=aksworkshop-9865
+
 ACR_NAME=acr28364
 
 
@@ -79,10 +83,11 @@ VERSION=$(az aks get-versions \
 
 
 2. AKS cluster name should be unique
+
 AKS_CLUSTER_NAME=aksworkshop-$RANDOM
 
 
-## Creating AKS Cluster
+### Creating AKS Cluster
 az aks create \
   --resource-group $RESOURCE_GROUP \
   --name $AKS_CLUSTER_NAME \
@@ -114,13 +119,13 @@ kubectl is the main kubernetes command line. We used to intract with the cluster
 
 So I'm going to use "az aks get-credentials" to connect AKS cluster. I'm going to hit below command
 
-## To connect with AKS cluster
+### To connect with AKS cluster
 az aks get-credentials \
   --resource-group $RESOURCE_GROUP \
   --name $AKS_CLUSTER_NAME
 
 
-## Getting nodes status 
+### Getting nodes status 
 kubectl get nodes
 
 Now I have to create a kubernetes namespace for the application. So this company's (website) want to deploy several apps from other teams in the deployed AKS cluster as well.
@@ -132,8 +137,8 @@ A namespace in kubernetes creates a logical isolation boundary. Names of resourc
 If we don't specify the namespace, when we work with kubernetes resources, the default namespace is implied.
 
 So let me create a namespace. If I go and do "kubectl get namespaces" for listing namespaces.  
-## Creating namespace
-## Logically isolated
+### Creating namespace
+### Logically isolated
 
 kubectl get namespaces
 
@@ -145,11 +150,12 @@ kubectl get namespaces
 
 
 
-### Step-2 :: How to create a private container registry
+## Step-2 :: How to create a private container registry
 
 Let's deploy a container registry for the environment. Container Registry name also should be unique.
 
 ACR_NAME=acr$RANDOM
+
 az acr create \
   --resource-group $RESOURCE_GROUP \
   --location $REGION_NAME \
@@ -158,10 +164,10 @@ az acr create \
   
   
   
-## Create docker images and push to ACR.
+### Create docker images and push to ACR.
 
 
-## Build ratings-api image and push to ACR. (Written in node.js using Express)
+### Build ratings-api image and push to ACR. (Written in node.js using Express)
 
 git clone https://github.com/MicrosoftDocs/mslearn-aks-workshop-ratings-api.git
 
@@ -177,7 +183,7 @@ az acr build \
 az acr build -t ratings-api:v1 -r $ACR_NAME .
 
 
-## Build ratings-web image and push to ACR (Written in node.js using Vue)
+### Build ratings-web image and push to ACR (Written in node.js using Vue)
 
 git clone https://github.com/MicrosoftDocs/mslearn-aks-workshop-ratings-web.git
 
@@ -192,7 +198,7 @@ az acr build \
 
 az acr build -t ratings-web:v1 -r $ACR_NAME .
 
-## To list the docker images in the ACR
+### To list the docker images in the ACR
 az acr repository list --name $ACR_NAME --output table
 
 
@@ -222,21 +228,21 @@ Helm wolud provide a standard repository of charts for many diffrent software pa
 We'll have to configure the client to use this table repository by running the "helm repo add" command.
 So I'm going to run this from the helm repository like we have to get bitnami, like we have the github also. 
 
->>> 
-helm repo add bitnami https://charts.bitnami.com/bitnami
- 
+```
+$ helm repo add bitnami https://charts.bitnami.com/bitnami
+```
 The above command will work like git clone or forke the repo.
 
->>>
+```
 helm search repo bitnami 
- 
+``` 
 Helm chart is a collection of files that would describe a related set of kubernetes resources. I can use single chart to deploy something simple like a memcached pod or something complex like a full web stack with http servers, database and caches. Helm chart s are stored in helm chart repository. The official chart repository is maintained on github.
 
 Now we are ready to install the mongodb instance.
 
->>>
+```
 helm install ratings bitnami/mongodb --namespace ratingsapp --set auth.username=vamsee,auth.password=vamsee,auth.database=ratingsdb
-
+```
 
 The "helm install" command is a powerful command with many capabilities. Keep in mind that we can easily remove release by running the "helm uninstall" command.
 
@@ -251,20 +257,20 @@ The ratings-api expects to find the connection details to the mongodb database i
 
 So I'm going to replace username, password and the endpoint.
 
->>>
+```
 kubectl create secret generic mongosecret \
   --namespace ratingsapp \ 
   --from-literal=MONGOCONNECTION="mongodb://vamsee:vamsee@ratings-mongodb.ratingsapp:27017/ratingsdb"
-
+```
 (or)  
->>>
+```
 kubectl create secret generic mongosecret --namespace ratingsapp --from-literal=MONGOCONNECTION="mongodb://vamsee:vamsee@ratings-mongodb.ratingsapp:27017/ratingsdb"
-
+```
 I don't have to mention my username and password in the configuration files I do not have to hard code them. I can retreive them from the Kubernetes secrets. 
 
->>>
+```
 kubectl describe secret mongosecret --namespace ratingsapp
-
+```
 
 
 Now I have AKS cluster with a configured mongodb database in a namespace called ratingsapp. In this namespace, we'll find the following resources. You would have a deployment ratings mongodb. A deployment represents one or more identical pods managed by the Kubernetes deployment controller. This type deployment defines the number of replicas or the pods to create for mongodb. The Kubernetes scheduler ensure that if pods or nodes encounter problems additional pods are scheduled on healthy nodes and you also see a pod of the name ratings mongodb. The Kubernetes uses pods to run an instance of mongodb. Inside pod you see the containers and I have a service which is called as ratings mongodb to simplify the network configuration.
@@ -300,7 +306,6 @@ We can just for a simplified creation in editor you can launch the editor by run
 
 ###
 code rating-api-deployment.yaml
-
 ---------------------------------
 apiVersion: apps/v1
 kind: Deployment
@@ -345,24 +350,25 @@ spec:
 
 -------------------------------
 
-###
+```
 kubectl apply \
   --namespace ratingsapp \
   -f rating-api-deployment.yaml
-  
-  
+```  
+```
 kubectl get pods \
   --namespace ratingsapp \
   -l app=ratings-api -w
-  
+```
 -w --> To watch
 Ctrl+C --> To stop watch
 
-
+```
 kubectl get pods --namespace ratingsapp
-
+```
+```
 kubectl get deployment ratings-api --namespace ratingsapp
-
+```
 
 
 Now I am going to create a Kubernetes service for the ratings-api service. 
@@ -376,10 +382,8 @@ So our next step is to simplify the network configuration for the application wo
 I'm going to create a manifest file for the Kubernetes service called yaml and then would apply that configuration
 
 ###
-
 code ratings-api-service.yaml
-
--------------------------
+-----------------------------
 apiVersion: v1
 kind: Service
 metadata:
@@ -407,12 +411,12 @@ If you would see, the type is ClusterIP. The service of type ClusterIP creates a
 So same way I'm gonna save it  and then I'm going tp apply my configuration.
 
 
-###
-
+```
 kubectl apply --namespace ratingsapp -f ratings-api-service.yaml
-
+```
+```
 kubectl get service ratings-api --namespace ratingsapp
-
+```
 
 Now the service show an internal ip address which is 10.2.0.43
 
@@ -422,8 +426,9 @@ The endpoint has the same name as the service. Now I have to validate that the s
 
 So I'm going to use "kubectl get endpoints" for my ratings-api
 
-###
+```
 kubectl get endpoints ratings-api --namespace ratingsapp
+```
 
 This is the endpoint on which my service is listening and this is also coming from the subnet that I defined when we created a cluster. so we have now creat a deplyment of the ratings-api, it have exposed it to internal service.
 
@@ -454,10 +459,8 @@ So let me just quickly log on to the portal an I have launched the Cloudshell as
 So first of all I will create a blank yaml file
 
 ###
-
 code ratings-web-deployment.yaml
-
-------------------------------
+--------------------------------
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -491,28 +494,27 @@ spec:
 ------------------------------
 
 
-###
-
+```
 kubectl apply \
   --namespace ratingsapp \
   -f ratings-web-deployment.yaml
-  
-
+```
+```
 kubectl get pods --namespace ratingsapp -l app=ratings-web -w
-
-
+```
+```
 kubectl logs <pod name> --namespace ratingsapp
+```
+```
 kubectl logs ratings-web-b44bbcf57-hfvsd --namespace ratingsapp
-
-
+```
+```
 kubectl get deployment ratings-web --namespace ratingsapp
-
+```
 Let's say the deployement is successful for ratings-web deployment. Now I will have to create a Kubernetes service for the ratings-web frontend. So in this step we'll have to simplify the network configuration for our application workloads we use a Kubernetes service to group the pods and provide network connectivity. I will use the Lubernetes load balancer instead of ClusterIP for this service. A load balancer would allow me or us to expose the kubernetes service on a public IP in the cluster. The type makes the service reachable from the outside from the cluster. So I will create a file like I did earlier.
 
 ###
-
 code ratings-web-service.yaml
-
 -----------------------------
 apiVersion: v1
 kind: Service
@@ -533,14 +535,14 @@ spec:
 If you would see the selector section here, it sits the set of pods targeted by a service is determined by the selector. The kubernetes load balancer traffic to ports that have labeled
  as ratings-web. The label was defined when we created the deployement. 
 
-###
-
+```
 kubectl apply \
   --namespace ratingsapp  \
   -f ratings-web-service.yaml
-
+```
+```
 kubectl get service ratings-web  --namespace ratingsapp
-
+```
 
 The service deployemnt is done and the load balancer ClusterIP is this and the external IP on which it will listen the traffic from internet is 40.76.151.178 and the ports are these.
 
@@ -578,41 +580,47 @@ Here we will deploy a basic Kubernetes Ingress Controller by using nginx. Then w
 So we will start by creating a namespace for the Ingress. 
 I will do
 
->>>
+```
 kubectl create namespace ingress
+```
 
 It will create a namespace with the name of ingress.
 
->>>
+```
 Kubectl get namespace
+```
 
 Now I can see igress namespace and earlier I was created ratingsapp. Now I will configure helm client to use the stable repository by running the helm repo at command.
 
->>>
+```
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+```
 (or)
+```
 helm repo add stable https://charts.helm.sh/stable
+```
 
 It will add the repo. "stable" has been added. so repo name stable has been added. Next we will install the nginx ingress controller. nginx ingress is a part of stable helm repository which we configured earlier when we installed mongodb. we will install two replicas of the nginx ingress controller with the set controller.replicaCount parameter for added.
 
 We will make sure to schedule the controller only on linux nodes as a windows server node should not run the ingress controller we will specify a node selector by using the set controller.nodeSelector parameter.
 
->>>
+```
 helm install nginx-ingress stable/nginx-ingress \
     --namespace ingress \
     --set controller.replicaCount=2 \
     --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
     --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux
-
+```
 
 It did that after the installation is finished, we will see an output like here(show output). Now let's check the public IP of the ingress service. It might take few minutes for the serice to acquire the public IP. Let me just run the command and check.
 
->>>
+```
 kubectl get service nginx-ingress-controller --namespace ingress -w
+```
 
 Now we will reconfigure the ratings-web service to use the ClusterIP. So I'm going to edit ratings-web-service.yaml file.
 
->>>
+###
 code ratings-web-service.yaml
 
 This is the file that we created earlier. If you would see the type is load balancer and I'm gonna replace the type to ClusterIP.
@@ -622,26 +630,27 @@ kubectl apply
 
 I'm going to use kubectl apply command to apply my configuration and before that I'm going to delete the service so there is a point here that we can't update the point value of type on a deployed service. We have to delete the service and recreate it. I'm going to delete it.
 
->>>
+```
 kubectl delete service \
    --namespace ratingsapp \
    ratings-web
+```
 
 Then I'm going to do the kubectl apply command.
 
->>>
+```
 kubectl apply \
     --namespace ratingsapp \
     -f ratings-web-service.yaml
- 
+```
+
 It took few seconds for the changes to take effect. Now I'm going to create an ingress resource for my ratings-web service and in order for my Kubernetes ingress controller to route request to the ratings-web service.
 
 I will have to have an ingress resource. The ingress resources where we specify the configuration. So each ingress resource will contain one or more ingress rules which specify an optional host a list of paths to evaluate in the request and a backend to route the request to. So I'm gonna edit the file that I did created earlier so I'm gonna do
 
->>>
+###
 code ratings-web-ingress.yaml
-
----
+-----------------------------
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -661,11 +670,11 @@ spec:
 
 In this file I need to update ingress IP value in the host key with the public IP of the ingress that we retrieved earlier. This value would allow you to access the ingress via hostname instead of an IP address. 
 
->>>
+```
 kubectl apply \
   --namespace ratingsapp \
   -f ratings-web-ingress.yaml
-
+```
 
 
 And in the next video, we will configure the SSL and TLS on this hostname to have the secure connection.
@@ -675,33 +684,35 @@ Step 7: How to Enable SSL and TLS in the Frontend ingress in Azuru Kubernetes Se
 ------------------------------------------------------------------------------------
 .......
 
->>>
+```
 kubectl create namespace cert-manager
+```
 
->>>
+```
 helm repo add jetstack https://charts.jetstack.io
+```
 
->>>
+```
 helm repo update
+```
 
->>>
+```
 kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.14/deploy/manifests/00-crds.yaml
+```
 
-
->>>
+```
 helm install cert-manager \
   --namespace cert-manager \
   --version v0.14.0 \
   jetstack/cert-manager
+```
 
-
->>>
+```
 kubectl get pods --namespace cert-manager
-
->>>
+```
+###
 code cluster-issuer.yaml
-
----
+------------------------
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
@@ -717,16 +728,15 @@ spec:
         ingress:
           class: nginx
 
->>>
+```
 kubectl apply \
   --namespace ratingsapp \
   -f cluster-issuer.yaml
+```
 
-
->>>
+###
 code ratings-web-ingress.yaml
-
----
+-----------------------------
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -740,7 +750,6 @@ spec:
       # - frontend.<ingress ip>.nip.io  # IMPORTANT: update <ingress ip> with the dashed public IP of your ingress, for example frontend.13.68.177.68.nip.ip
       - frontend.52.151.204.185.nip.io  # IMPORTANT: update <ingress ip> with the dashed public IP of your ingress, for example frontend.13.68.177.68.nip.ip
       secretName: ratings-web-cert
-      
   rules:
   # - host: frontend.<ingress ip>.nip.io  # IMPORTANT: update <ingress ip> with the dashed public IP of your ingress, for example frontend.13.68.177.68.nip.ip
   - host: frontend.52.151.204.185.nip.io  # IMPORTANT: update <ingress ip> with the dashed public IP of your ingress, for example frontend.13.68.177.68.nip.ip
@@ -752,40 +761,44 @@ spec:
         path: /
 
 
->>>
+```
 kubectl apply \
   --namespace ratingsapp \
   -f ratings-web-ingress.yaml
+```
 
-
->>>
+```
 kubectl describe cert ratings-web-cert --namespace ratingsapp
-
+```
 
 Step 8 - How to Enable AKS Monitoring
 --------------------------------------
->>>
+```
 WORKSPACE=aksworkshop-workspace-$RANDOM
+```
 
+```
 az resource create --resource-type Microsoft.OperationalInsights/workspaces \
   --name $WORKSPACE \
   --resource-group aksworkshop \
   --location eastus \
   --properties '{}' -o table
+```
 
-
+```
 WORKSPACE_ID=$(az resource show --resource-type Microsoft.OperationalInsights/workspaces \
   --resource-group aksworkshop \
   --name $WORKSPACE \
   --query "id" -o tsv)
+```
 
-
+```
 az aks enable-addons \
   --resource-group aksworkshop \
   --name aksworkshop-13664 \
   --addons monitoring \
   --workspace-resource-id $WORKSPACE_ID
-
+```
 
 
 
@@ -810,10 +823,9 @@ The RoleBinding will grant permission within a specific namespace and a ClusterR
 
 So let me create a file called logreader-rbac.yaml by using the integrated script editor.
 
->>>
+###
 code logreader-rbac.yaml
-
----
+------------------------
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
