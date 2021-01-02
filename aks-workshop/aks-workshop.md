@@ -14,27 +14,26 @@ The company most used Kubernetes as compute platform.
 ### Step-1
 
 ### Parameters:
-
+```
 REGION_NAME=eastus
-
 RESOURCE_GROUP=aksworkshop
-
 SUBNET_NAME=aks-subnet
-
 VNET_NAME=aks-vnet
+```
 
-
+```
 AKS_CLUSTER_NAME=aksworkshop-9865
-
 ACR_NAME=acr28364
+```
 
 
 ### Create Resource Group
 
+```
 az group create \
   --name $RESOURCE_GROUP \
   --location $REGION_NAME
-
+```
 
 ### Networking
 
@@ -54,7 +53,7 @@ First I will create VNet and Subnet. And Pods deployed in the cluster, will be a
 
 
 ### Creating VNet and Subnet
-
+```
 az network vnet create \
   --resource-group $RESOURCE_GROUP \
   --location $REGION_NAME \
@@ -62,32 +61,34 @@ az network vnet create \
   --address-prefixes 10.0.0.0/8 \
   --subnet-name $SUBNET_NAME \
   --subnet-prefixes 10.240.0.0/16
-
+```
 
 ### Storing Subnet id
-
+```
 SUBNET_ID=$(az network vnet subnet show \
   --resource-group $RESOURCE_GROUP \
   --vnet-name $VNET_NAME \
   --name $SUBNET_NAME \
   --query id -o tsv)
-
+```
 
 Then I will create AKS cluster. There are two values, we need to know before running the "az aks create" command to create AKS cluster. 
 1. The version of the latest. The Kubernetes version available in the region. So to get the latest non-preview kubernetes version. I should use "az aks get version" command.
 
+```
 VERSION=$(az aks get-versions \
   --location $REGION_NAME \
   --query 'orchestrators[?!isPreview] | [-1].orchestratorVersion' \
   --output tsv)
-
+```
 
 2. AKS cluster name should be unique
-
+```
 AKS_CLUSTER_NAME=aksworkshop-$RANDOM
-
+```
 
 ### Creating AKS Cluster
+```
 az aks create \
   --resource-group $RESOURCE_GROUP \
   --name $AKS_CLUSTER_NAME \
@@ -102,7 +103,7 @@ az aks create \
   --dns-service-ip 10.2.0.10 \
   --docker-bridge-address 172.17.0.1/16 \
   --generate-ssh-keys
-  
+```
 
 I have specifically specified that the VM set type should be VMSS and the VM Scale sets enable you to switch on the cluster auto scaler when needed.
 
@@ -120,13 +121,16 @@ kubectl is the main kubernetes command line. We used to intract with the cluster
 So I'm going to use "az aks get-credentials" to connect AKS cluster. I'm going to hit below command
 
 ### To connect with AKS cluster
+```
 az aks get-credentials \
   --resource-group $RESOURCE_GROUP \
   --name $AKS_CLUSTER_NAME
-
+```
 
 ### Getting nodes status 
+```
 kubectl get nodes
+```
 
 Now I have to create a kubernetes namespace for the application. So this company's (website) want to deploy several apps from other teams in the deployed AKS cluster as well.
 
@@ -139,80 +143,86 @@ If we don't specify the namespace, when we work with kubernetes resources, the d
 So let me create a namespace. If I go and do "kubectl get namespaces" for listing namespaces.  
 ### Creating namespace
 ### Logically isolated
-
+```
 kubectl get namespaces
 
 kubectl create namespace <desired namespace name>
 kubectl create namespace ratingsapp
 
 kubectl get namespaces
-
+```
 
 
 
 ## Step-2 :: How to create a private container registry
 
 Let's deploy a container registry for the environment. Container Registry name also should be unique.
-
+```
 ACR_NAME=acr$RANDOM
-
+```
+```
 az acr create \
   --resource-group $RESOURCE_GROUP \
   --location $REGION_NAME \
   --name $ACR_NAME \
   --sku standard
-  
+```
   
   
 ### Create docker images and push to ACR.
 
 
 ### Build ratings-api image and push to ACR. (Written in node.js using Express)
-
+```
 git clone https://github.com/MicrosoftDocs/mslearn-aks-workshop-ratings-api.git
-
+```
+```
 cd mslearn-aks-workshop-ratings-api
-
+```
+```
 az acr build \
   --resource-group $RESOURCE_GROUP \
   --location $REGION_NAME \
   --image ratings-api:v1 .
-
+```
 (or) new
-
+```
 az acr build -t ratings-api:v1 -r $ACR_NAME .
-
+```
 
 ### Build ratings-web image and push to ACR (Written in node.js using Vue)
-
+```
 git clone https://github.com/MicrosoftDocs/mslearn-aks-workshop-ratings-web.git
-
+```
+```
 cd mslearn-aks-workshop-ratings-website
-
+```
+```
 az acr build \
   --resource-group $RESOURCE_GROUP \
   --location $REGION_NAME \
   --image ratings-web:v1 .
-
+```
 (or) new
-
+```
 az acr build -t ratings-web:v1 -r $ACR_NAME .
-
+```
 ### To list the docker images in the ACR
+```
 az acr repository list --name $ACR_NAME --output table
-
+```
 
 
 Now I will configure the AKS cluster to authenticate to the ACR. So we need to setup the authentication between the container registry and kubernetes cluster to allow communication between these two services. So I'm going to integrate the container registry by replying the AKS cluster name value and the ACR value.
 
 I will use "az aks update" command to authenticate my azure container registry in which we have two docker images that we created using the github repo.
 
-
+```
 az aks update \
   --name $AKS_CLUSTER_NAME \
   --resource-group $RESOURCE_GROUP \
   --attach-acr $ACR_NAME
-  
+```
 AAD propagation will add with above command.
 
 
