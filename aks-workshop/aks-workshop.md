@@ -306,6 +306,7 @@ We can just for a simplified creation in editor you can launch the editor by run
 
 ###
 code rating-api-deployment.yaml
+
 ---------------------------------
 apiVersion: apps/v1
 kind: Deployment
