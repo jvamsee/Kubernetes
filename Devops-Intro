@@ -1,0 +1,103 @@
+Devops:
+
+
+Continous Integration(CI): 
+CI is used to automate tests and build for the projects. It is used to find bugs or other build issues in early phase.
+
+Continous Delivery(CD):
+CD is used to automatically deploy and test code in multiple stages (environments like dev, qa, staging, test, UAT etc) to maintain the quality.
+
+We can trigger pipeline:
+1. Manually : At any time you can trigger/run the CI/CD pipeline to build and test your code.
+2. Automatically
+   - On each commit
+   - On a fix interval
+   - At a particular time
+   
+Introduction:
+-------------
+My self _____________. I have total ____ years of experirnce in IT industry. I started my career as a Unix admin.
+
+I have Strong experirnce in Distributed Version Control system - GIT, Github & Bitbucket. 
+                            Build tool - Maven, 
+							CI/CD & Automation Tool - Jenkins
+							Static code Analysis tool - SonarQube
+							Ariactory tool - Nexus
+							Containerization tool - Docker
+							Container Management tool - Kubernetes (Cloud Managed Kubernetes & On Premisis Kubernetes)
+							Configuration Management tool - Ansible
+							Cloud - Azure and AWS
+							
+Strong experience in developing and maintaining CI/CD process using tools like Maven, Jenkins, etc.  
+Hands-on experience to build and handle VM’s, Containers utilizing tools like Kubernetes, Docker, etc. 
+Hands-on experience in using configuration management tools like Ansible, etc.
+Hands-on experience in building, designing and maintaining cloud-based applications with Azure, AWS etc.
+Expertise in operating Linux environment with good command over any scripting language such as Shell etc.
+Working in regulation with industry-standard best practices in close coordination with integration and deployment team. 
+							
+Roles & Responsibilities:
+-------------------------
+As I am part of Devops CoE, We are hanlding multiple projects.
+
+We are responsible for  Creating the Environments (using Infrastructure managament tools like terraform)
+                        Creating and managing CI/CD build system.
+						Maintain continuous integration and continuous delivery process using tools like Jenkins, maven Git, etc. 
+						Creating Pipelines using groovy as per requirements
+						Choose the best tools and technologies which best fits the business needs.
+						Automating the rotinue tasks using bash scripting
+                                                    
+
+
+Daily Activities:
+----------------
+
+Daily stand-up meetings
+((Checking Email))
+Checking Alerts
+Checking JIRA / Any ticketing tool for pending/scheduled tasks.
+Clear Notifications of alerting system.
+Ensure if any new server is created and monitoring has been setup on that.
+Verify if all the service running on that server are covered under monitoring system.
+Check and automate if any server is running out of disk.
+Taking backup of instance and restoring if required.
+Taking backup of ProdDB and providing that DB to developers on Staging / Testing environments for testing of any issue.
+Automation setup for Daily tasks like (DB/Instance/Logs/Config-Files) backup.
+In case of new project setting up new Jenkins Job(Free style/ Pipelines).
+Making config changes on servers using Ansible.
+Writing scripts / playbooks for automating daily tasks.
+Deploying code on Development and Production environments.
+Ensuring/Insuring that post deployment sanity of code is done and proper sign-offs are given.
+Seeking for approvals from (Business/QA/UAT and Security Sign-offs)
+Providing assistance during Autits.
+Ensuring that access on servers are given t required users only that's too affter proper approvals.
+
+
+
+
+1. Make sure that the pipeline is running smoothly – to make sure that CI/CD pipeline is intact and fixing any issue or failure with it is the #1 priority for the day. They often need to spend time on troubleshooting, analysing and providing fixes to issues.
+
+2. Interaction with other teams – Co-ordinating and collaborating with Dev and QA team, Program management
+
+3. Work on Automation Backlog – Working on Automating stuff on daily basis.
+
+4. Infrastructure Management – Responsible for maintaining and managing the infrastructure required for CI/CD pipeline and making sure that its up and running and being used optimally is also part of their daily schedule. Ex. Working on Backup, High Availability, New Platform setup etc.
+
+5. Dealing with Legacy stuff – spending time on legacy i.e. in terms of supporting it or migrating to the latest.
+
+6. Exploration – There are many options as open source so team need to regularly check on this to make sure the adoptions as required, this is something which also require some effort not on daily but regular basis. Ex. What are open source options available to keep the cost at minimum?
+
+6. Removing bottleneck – Identify the bottlenecks / Manual handshakes and work with everyone involved (Dev / QA and all other stakeholder) to remove them so team spend good amount of time in finding such things and build the Automation Backlog using this. Ex. How we can get builds faster?
+
+7. Documentation – Though Agile / DevOps stresses less on the documentation, it is still the important one which DevOps engineer does on daily basis, Be it Server Information, Daily Week charted, Scrum / Kanban board or Simple steps to configure / backup or modify the infrastructure, you need to spent good amount of time in coming up these artifacts.
+
+8. Training and Self Development – Self leaning and Training is very useful in getting better understanding and many organisations encourage their employee to take the time out and do some of these and same holds true for DevOps folks as well, So learn something new everyday...
+
+9. Continuous Improvement as Practice – Last but not least, It’s up to the DevOps folks to build awareness on the potential of CI/CD and DevOps practices and building a culture of leveraging it for doing things better, reducing re-work, increasing the productivity and optimising the use of existing resources. Go and talk to people to build the DevOps and Continuous Improvement culture...
+
+
+Azure Devops:
+1. Boards
+2. Repos
+3. Pipelines
+4. Test Plans
+5. Artifacts
