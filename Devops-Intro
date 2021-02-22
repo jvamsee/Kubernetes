@@ -39,7 +39,10 @@ Hands-on experience in using configuration management tools like Ansible, etc.
 Hands-on experience in building, designing and maintaining cloud-based applications with Azure, AWS etc.
 Expertise in operating Linux environment with good command over any scripting language such as Shell etc.
 Working in regulation with industry-standard best practices in close coordination with integration and deployment team. 
-							
+
+Azure - VNet, Subnet, azure VM, NSG, AKS, ACR, Subscriptions, Resource groups, Resource lock, Azure DNS
+AWS - VPC, Subnet, EC2, S3, EBS, RDS, SG, NACL, EKS, NAT Gateway, NAT Instance, Route53
+
 Roles & Responsibilities:
 -------------------------
 As I am part of Devops CoE, We are hanlding multiple projects.
