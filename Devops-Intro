@@ -1,5 +1,10 @@
-Devops:
+SDLC:
+Plan --> Code --> Build --> Test --> Deploy --> Operate --> Monitor
 
+
+Devops:
+Devops is culture or practice which fills the gap between development team and operations team.
+Both the teams works together in entire SDLC to ensure the quality of product, abilty of product to work in different environments.
 
 Continous Integration(CI): 
 CI is used to automate tests and build for the projects. It is used to find bugs or other build issues in early phase.
