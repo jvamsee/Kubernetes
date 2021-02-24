@@ -12,6 +12,10 @@ CI is used to automate tests and build for the projects. It is used to find bugs
 Continous Delivery(CD):
 CD is used to automatically deploy and test code in multiple stages (environments like dev, qa, staging, test, UAT etc) to maintain the quality.
 
+Ingress and Ingress Controller:
+Strictly speaking, an ingress is an API object that defines the traffic rules (e.g. load balancing, SSL termination, path-based routing, protocol), 
+whereas the Ingress Controller is the component responsible for fulfilling those requests.
+
 We can trigger pipeline:
 1. Manually : At any time you can trigger/run the CI/CD pipeline to build and test your code.
 2. Automatically
