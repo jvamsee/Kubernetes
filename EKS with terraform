@@ -1,0 +1,19 @@
+Step 1: Set up Terraform with AWS
+The first thing to set up is your Terraform. We will create an AWS IAM users for Terraform.
+
+In your AWS console, go to the IAM section and create a user named “FullAccess”. Then add your user to a group named “FullAccessGroup”. Attaches to this group the following rights:
+
+AdministratorAccess
+AmazonEKSClusterPolicy
+After these steps, AWS will provide you a Secret Access Key and Access Key ID. Save them preciously because this will be the only time AWS gives it to you.
+
+In your own console, create a ~/.aws/credentials file and put your credentials in it:
+credentials file:
+[default]
+ aws_access_key_id=***********
+ aws_secret_access_key=****************************
+ 
+ The last step is to create this file:
+ config file:
+ [default]
+ region=eu-west-3
