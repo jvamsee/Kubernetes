@@ -1,4 +1,4 @@
-### Kubernetes – DNS
+## Kubernetes – DNS
 - https://theithollow.com/2019/02/18/kubernetes-dns/
 
 ## Kubernetes – ConfigMaps
